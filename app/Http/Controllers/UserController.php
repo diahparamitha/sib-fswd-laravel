@@ -44,7 +44,7 @@ class UserController extends Controller
         }
 
         $data -> save();
-        return redirect('/')->with('success', ' User berhasil ditambah!');
+        return redirect('/dashboard')->with('success', ' User berhasil ditambah!');
     }
 
     //Ke halaman edit user
@@ -88,7 +88,7 @@ class UserController extends Controller
         }
 
         $row->save();
-        return redirect('/')->with('edit', 'Data pengguna berhasil di-update!.');
+        return redirect('/dashboard')->with('edit', 'Data pengguna berhasil di-update!.');
 
     }
 
@@ -105,6 +105,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect('/')->with('delete', 'Data user berhasil dihapus');
+        return redirect('/dashboard')->with('delete', 'Data user berhasil dihapus');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -15,16 +16,22 @@ class AuthController extends Controller
 
     public function loginAkun(Request $request)
     {
-        $auth = $request->validate([
-            'email'     => 'required | email',
-            'password'  => 'required',
+        $credentials = $request->validate([
+            'email'    => 'required | email',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($auth)) {  //Jika data yang diinput sesuai
-            $request->session()->regenerate();
-            return redirect()->intended('/'); //diarahkan ke halaman index
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->isAdmin()) {
+                return redirect()->route('index'); // Ganti dengan rute yang sesuai untuk halaman admin
+            } else {
+                return redirect()->intended('/'); // Ganti dengan rute yang sesuai untuk halaman user
+            }
         }
-        return back()->with('login', 'login gagal!'); //gagal login balik ke halaman login lagi dan tampilkan pesan kesalahan
+
+        return back()->with(['login' => 'Login gagal!']); // Ganti dengan tindakan yang sesuai jika login gagal
     }
 
     public function logout(Request $request) //untuk logout
@@ -33,11 +40,16 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');   //diarahkan ke halaman utama
+        return redirect('/');   //diarahkan ke halaman utama
     }
 
     public function index() {
         $result = User::all();
         return view('index', compact('result'));
+    }
+
+    public function landing() {
+         $products = Product::all();
+        return view('landing', compact('products'));
     }
 }
