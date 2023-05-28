@@ -72,3 +72,39 @@ form {
     border-radius: 5px;
     font-size: 17px;
 }
+
+  .carousel-caption {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 40%; /* Mengubah lebar card menjadi 40% dari lebar slide */
+   max-width: 300px;
+}
+
+.carousel-caption .card {
+   background-color: rgba(0, 0, 0, 0.5);
+   color: #fff;
+   width: 100%;
+   height: 100px; /* Mengubah tinggi card menjadi 100px */
+}
+
+.carousel-caption .card-body {
+   padding: 10px; /* Mengurangi padding pada card body */
+}
+
+.carousel-caption .card-title {
+   font-size: 16px; /* Mengubah ukuran font card title menjadi lebih kecil */
+   font-weight: bold;
+   margin-bottom: 5px;
+}
+
+.carousel-caption .btn {
+   font-size: 14px; /* Mengubah ukuran font button menjadi lebih kecil */
+   font-weight: bold;
+   color: #fff;
+   background-color: transparent;
+   border: 2px solid #fff;
+   padding: 5px 10px; /* Mengurangi padding pada button */
+   transition: all 0.3s ease;
+}

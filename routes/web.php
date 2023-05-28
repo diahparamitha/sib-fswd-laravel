@@ -23,10 +23,19 @@ Route::get('/', [AuthController::class, 'landing']);
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/category/{id}', [CategoryController::class, 'category']);
 Route::get('/category-list', [CategoryController::class, 'index_list']);
+Route::post('/category/create', [CategoryController::class, 'createCategory']);
+Route::get('/category/edit/{id}', [CategoryController::class, 'editCategory']);
+Route::post('/category/update/{id}', [CategoryController::class, 'updateCategory']);
+Route::post('category/delete/{id}', [CategoryController::class, 'delete']);
 
 Route::get('/product', [ProductController::class, 'index']);
-Route::get('/detail-product/{id}', [ProductController::class, 'detail']);
+Route::get('/detail-product/{id}', [ProductController::class, 'detail'])->middleware('checklogin');
 Route::get('/product-list', [ProductController::class, 'index_list']);
+Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
+Route::post('/product/update/{id}', [ProductController::class, 'update']);
+Route::post('/product/delete/{id}', [ProductController::class, 'delete']);
+Route::get('/product/create', [ProductController::class, 'create']);
+Route::post('/product/create', [ProductController::class, 'createProduct']);
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginAkun']);

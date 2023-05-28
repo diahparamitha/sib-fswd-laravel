@@ -5,7 +5,7 @@
 
 <div class="container p-5">
 		<div class="row">
-			@foreach($products as $product) <!-- mengambil nilai dari postcontoller metod product (php line 75) -->
+			@foreach($products as $product) 
 			<div class="col-md-3 mt-5">
 				<div class="card" style="background-color: turquoise;">
 					<img src="https://source.unsplash.com/500x400?{{ $product->category->name }}" class="card-img" alt="$product->category->name }}">

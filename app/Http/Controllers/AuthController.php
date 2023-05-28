@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -50,6 +51,7 @@ class AuthController extends Controller
 
     public function landing() {
          $products = Product::all();
-        return view('landing', compact('products'));
+         $categories = Category::all();
+        return view('landing', compact(['products', 'categories']));
     }
 }

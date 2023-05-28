@@ -43,6 +43,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $guard = 'web';
+
     public function isAdmin()
     {
         return $this->role === 'admin';

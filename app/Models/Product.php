@@ -16,6 +16,6 @@ class Product extends Model
     protected $table = 'products';
 
     public function Category() {
-        return $this->belongsTo(Category::class);   //relasi tabel post ke tabel category. satu postingan memiliki satu kategori
+        return $this->belongsTo(Category::class);  
     }
 }

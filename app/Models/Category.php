@@ -16,6 +16,6 @@ class Category extends Model
     protected $table = 'categories';
 
     public function Products() {
-        return $this->hasMany(Product::class);   //relasi tabel produk ke tabel category. satu postingan memiliki satu kategori
+        return $this->hasMany(Product::class);   //relasi tabel produk ke tabel category. satu product memiliki satu kategori
     }
 }

@@ -7,14 +7,34 @@
          </button>
          <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-               <li class="nav-item active">
-                  <a class="nav-link" href="/landing">Home</a>
+               <li class="nav-item {{ Request::is('/') ? 'active' : '' }}">
+                  <a class="nav-link" href="/">Home</a>
+               </li>
+               @if (Auth::check())
+                   @if (Auth::user()->isAdmin())
+                       <a class="nav-link" href="/category-list">Categories</a>
+                   @else
+                       <a class="nav-link" href="/category">Categories</a>
+                   @endif
+               @else
+                   <a class="nav-link" href="/category">Categories</a>
+               @endif
+
+               <li class="nav-item {{ Request::is('product') ? 'active' : '' }}">
+                   @if (Auth::check())
+                       @if (Auth::user()->isAdmin())
+                           <a class="nav-link" href="/product-list">Products</a>
+                       @else
+                           <a class="nav-link" href="/product">Products</a>
+                       @endif
+                   @else
+                       <a class="nav-link" href="/product">Products</a>
+                   @endif
+               </li>
+
                </li>
                <li class="nav-item">
-                  <a class="nav-link" href="/category">Category</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="/product">Products</a>
+                  <a class="nav-link" href="/logout">Logout</a>
                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -27,71 +47,49 @@
          </div>
       </nav>
    </div>
+</div>
+
+
    <!-- banner section start --> 
-     <div class="banner_section layout_padding">
-            <div class="container">
-               <div id="banner_slider" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                     <div class="carousel-item active" style="background-image: url('{{ asset('images/bg-biru.jpg') }}');">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="banner_img"><img src="{{ asset ('images/laptop.png')}}" width="auto"></div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="banner_taital_main">
-                                 <h1 class="banner_taital">Laptop</h1>
-                                 <h5 class="tasty_text">Arkatama Store</h5>
-                                 <p class="banner_text">Ciptakan inovasi baru bersama kami </p>
-                                 <div class="btn_main">
-                                    <div class="callnow_bt active"><a href="https://api.whatsapp.com/send?phone=087771842546">Call Now</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="carousel-item" style="background-image: url('{{ asset('images/bg-biru.jpg') }}');">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="banner_img"><img src="{{ asset ('images/hp.png')}}" width="200px"></div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="banner_taital_main">
-                                 <h1 class="banner_taital">Phone</h1>
-                                 <h5 class="tasty_text">Arkatama Store</h5>
-                                 <p class="banner_text">Ciptakan inovasi baru bersama kami </p>
-                                 <div class="btn_main">
-                                    <div class="callnow_bt active"><a href="https://api.whatsapp.com/send?phone=087771842546">Call Now</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="carousel-item" style="background-image: url('{{ asset('images/bg-biru.jpg') }}');">
-                        <div class="row">
-                           <div class="col-md-6">
-                              <div class="banner_img"><img src="{{ asset ('images/tablet.png')}}"></div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="banner_taital_main">
-                                 <h1 class="banner_taital">Tablet</h1>
-                                 <h5 class="tasty_text">Arkatama Store</h5>
-                                 <p class="banner_text">Ciptakan inovasi baru bersama kami </p>
-                                 <div class="btn_main">
-                                    <div class="callnow_bt active"><a href="https://api.whatsapp.com/send?phone=087771842546">Call Now</a></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+<div class="banner_section layout_padding">
+   <div class="container">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+         <!-- Indicators -->
+         <ol class="carousel-indicators">
+            @foreach($categories as $index => $category)
+            <li data-target="#myCarousel" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
+            @endforeach
+         </ol>
+
+         <!-- Slides -->
+         <div class="carousel-inner">
+            @foreach($categories as $index => $category)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+               <img class="d-block w-100" src="https://source.unsplash.com/1200x450?/{{ $category->name }}" width="auto" alt="Slide {{ $index + 1 }}">
+               <div class="carousel-caption">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">{{ $category->name }}</h5>
+                        <button class="btn btn-primary" onclick="window.location.href='/category/{{ $category->id}}'">Read More</button>
                      </div>
                   </div>
-                  <a class="carousel-control-prev" href="#banner_slider" role="button" data-slide="prev">
-                  <i class="fa fa-arrow-left"></i>
-                  </a>
-                  <a class="carousel-control-next" href="#banner_slider" role="button" data-slide="next">
-                  <i class="fa fa-arrow-right"></i>
-                  </a>
                </div>
             </div>
+            @endforeach
          </div>
-   <!-- banner section end -->
+
+         <!-- Controls -->
+         <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+         </a>
+         <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+         </a>
+      </div>
+   </div>
 </div>
+
+</div>
+<!-- banner section end -->
