@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function createCategory(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required | min:3',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
         // Simpan kategori baru ke database
@@ -63,7 +63,7 @@ class CategoryController extends Controller
         $row = Category::find($id);
 
         $validated      = $request->validate([
-            'name'      => 'required',
+            'name'      => 'required | min:3',
             'image'    => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 

@@ -73,6 +73,13 @@
         </div>
         @endif
 
+         @if(session()->has('alert'))
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          {{ session('alert') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
+        @endif
+
         <div class="container-fluid" style="margin-bottom: 30px; padding-top: 3px;">
           <h3 style="text-align: center;">Products</h3>
           <form action="/product/create" style="text-align: right;">
@@ -107,8 +114,9 @@
                     </div>
                   </td>
                 <td>
-                  <a href="/detail-product/{{ $data->id}}"><button class="btn btn-primary">detail</button></a> ||
-                    <a href="/product/edit/{{ $data->id }}" onclick="return confirm('Yakin product ini {{$data->name}} mau di ubah?')"><button class="btn btn-warning">edit</button></a>
+                  <a href="/detail-product/{{ $data->id}}"><button class="btn btn-primary">detail</button></a>
+                     || 
+                     <a href="/product/edit/{{ $data->id }}" onclick="return confirm('Yakin product ini {{$data->name}} mau di ubah?')"><button class="btn btn-warning">edit</button></a> ||
                       <form action="/product/delete/{{ $data->id }}" method="post" class="d-inline">
                           @csrf
                           <button class="btn btn-danger" onclick="return confirm('Hapus product ini {{$data->name}}?')">hapus</button>

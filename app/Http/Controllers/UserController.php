@@ -9,19 +9,21 @@ class UserController extends Controller
 {
     //Ke halaman form tambah user
     public function create() {
-        return view('users/create');
+        return view('users/create', [
+            'users' => User::all()
+        ]);
     }
 
     //Tambah user
     public function createUser(Request $request) {
         $request->validate([
-            'name'      => 'required',
-            'email'     => 'required|email|unique:users',
-            'phone'     => 'required|min:12|max:12',
-            'address'   => 'required',
+             'name'      => 'required | min:3',
+            'email'     => 'required | email | unique:users',
+            'phone'     => 'required | min:12 | max:12',
+            'address'   => 'required | max:50',
             'role'      => 'required',
-            'password'  => 'required',
-            'avatar'    => 'image|mimes:png,jpeg,jpg',
+            'password'  => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])/',
+            'avatar'    => 'image | file',
         ]);
 
         $data               = new User;
@@ -60,12 +62,12 @@ class UserController extends Controller
         $row = User::find($id);
 
         $validated      = $request->validate([
-            'name'      => 'required',
+            'name'      => 'required | min:3',
             'email'     => 'required | email',
             'phone'     => 'required | min:12 | max:12',
-            'address'   => 'required',
+            'address'   => 'required | max:50',
             'role'      => 'required',
-            'password'  => 'required',
+            'password'  => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])/',
             'avatar'    => 'image | file',
         ]);
 
@@ -89,7 +91,6 @@ class UserController extends Controller
 
         $row->save();
         return redirect('/dashboard')->with('edit', 'Data pengguna berhasil di-update!.');
-
     }
 
     //Ke halaman detail user

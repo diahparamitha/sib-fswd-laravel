@@ -18,8 +18,8 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomFloat(2, 20, 50),
             'status' => $this->faker->randomElement(['accepted', 'rejected', 'waiting']),
             'image' => $this->faker->imageUrl(1920, 1440),
-            'created_by' => $this->faker->numberBetween(1,2),
-            'verified_by' => $this->faker->numberBetween(1,2),
+            'created_by' => 1,
+            'verified_by' => 1,
         ];
     }
 }

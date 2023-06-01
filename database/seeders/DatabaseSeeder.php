@@ -47,6 +47,16 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password123'),
         ]);
 
+          User::create([
+            'name' => 'Diah',
+            'email' => 'user@gmail.com',
+            'role' => 'user',
+            'avatar' => $faker->imageUrl(1920, 1440),
+            'phone' => '089767543456',
+            'address' => "Jalan Baru",
+            'password' => bcrypt('password123'),
+        ]);
+
          //User::factory(9)->create();
 
          Category::create([

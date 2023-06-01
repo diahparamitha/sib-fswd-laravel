@@ -70,6 +70,9 @@
             <div class="form-group">
               <label for="image">image</label>
               <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" value="{{ $category->image }}">
+              @error('image')
+                <div class="text-danger">{{ $message }}</div>
+              @enderror
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>

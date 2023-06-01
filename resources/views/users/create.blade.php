@@ -18,8 +18,8 @@
                 @csrf
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" required placeholder="Enter name" value="{{ old('username') }}">
-                    @error('username')
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" required placeholder="Enter name" value="{{ old('name') }}">
+                    @error('name')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -53,6 +53,7 @@
                     <select class="form-control " id="role" name="role" required>
                         <option value="admin">Admin</option>
                         <option value="staff">Staff</option>
+                        <option value="user">user</option>
                     </select>
                 </div>
 

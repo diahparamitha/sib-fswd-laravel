@@ -11,7 +11,7 @@
                   <a class="nav-link" href="/">Home</a>
                </li>
                @if (Auth::check())
-                   @if (Auth::user()->isAdmin())
+                   @if (Auth::user()->isAdmin() || Auth::user()->isStaff())
                        <a class="nav-link" href="/category-list">Categories</a>
                    @else
                        <a class="nav-link" href="/category">Categories</a>
@@ -22,7 +22,7 @@
 
                <li class="nav-item {{ Request::is('product') ? 'active' : '' }}">
                    @if (Auth::check())
-                       @if (Auth::user()->isAdmin())
+                       @if (Auth::user()->isAdmin() || Auth::user()->isStaff())
                            <a class="nav-link" href="/product-list">Products</a>
                        @else
                            <a class="nav-link" href="/product">Products</a>

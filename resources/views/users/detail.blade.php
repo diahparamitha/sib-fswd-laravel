@@ -19,7 +19,7 @@
 		        <p class="card-text">Address : <?= $row["address"]; ?></p>
 		        <p class="card-text">Role : <?= $row["role"]; ?></p>
 		      </div>
-		      <a href="/" style="text-decoration: none; float: right;"> Kembali </a>
+		      <a href="/dashboard" style="text-decoration: none; float: right;"> Kembali </a>
 		    </div>
 		  </div>
 		</div>

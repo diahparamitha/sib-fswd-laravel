@@ -26,7 +26,7 @@
         <label for="password"> Password </label><br>
         <input type="password" id="password" name="password" placeholder="Enter password"><br>
         <button type="submit" class="btn btn-primary" name="login">Login</button>
-        <p style="text-align: center;"> Belum punya akun? Daftar <a href="/create">disini!</a></p>
+        <p style="text-align: center;"> Ada Kendala? Hubungi <a href="https://api.whatsapp.com/send?phone=087771842546">Admin</a></p>
     </form>
     
   </body>

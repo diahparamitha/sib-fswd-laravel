@@ -55,6 +55,7 @@
               <select class="form-control " id="role" placeholder="Masukkan Tipe Akun" name="role" value="{{ $row->role }}" required>
                 <option value="admin">Admin</option>
                 <option value="staff">Staff</option>
+                <option value="user">User</option>
               </select>
             </div>
 

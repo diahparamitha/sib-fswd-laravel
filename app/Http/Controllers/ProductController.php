@@ -45,8 +45,8 @@ class ProductController extends Controller
     public function createProduct(Request $request) {
         $request->validate([
            'category_id'       => 'required',
-            'name'              => 'required',
-            'description'       => 'required',
+            'name'              => 'required | min:5',
+            'description'       => 'required | min:10',
             'price'             => 'required|regex:/^\d{1,6}(\.\d{1,2})?$/',
             'status'            => 'required',
             'image'             => 'image|mimes:png,jpeg,jpg',
@@ -86,8 +86,8 @@ class ProductController extends Controller
 
         $validated              = $request->validate([
             'category_id'       => 'required',
-            'name'              => 'required',
-            'description'       => 'required',
+            'name'              => 'required | min:5',
+            'description'       => 'required | min:10',
             'price'             => 'required|regex:/^\d{1,6}(\.\d{1,2})?$/',
             'status'            => 'required',
             'image'             => 'image|mimes:png,jpeg,jpg',

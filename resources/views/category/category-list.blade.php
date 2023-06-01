@@ -72,6 +72,13 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
         </div>
         @endif
+
+         @if(session()->has('alert'))
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          {{ session('alert') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
+        @endif
         
         <div class="container-fluid" style="margin-bottom: 30px; padding-top: 3px;">
           <h3 style="text-align: center;">Category</h3>
@@ -95,8 +102,8 @@
                 <td><img class="image" src="{{ asset('image_category/'. $data['image']) }}" width="100px"  alt="Image"></td>
                 <td>{{ $data->name }}</td>
                  <td>
-                  <a href="/category/{{ $data->id}}"><button class="btn btn-primary">lihat</button></a> ||
-                   <a href="/category/edit/{{ $data->id }}" onclick="return confirm('Yakin category {{$data->name}} mau diubah?')"><button class="btn btn-warning">edit</button></a> || ||
+                  <a href="/category/{{ $data->id}}"><button class="btn btn-primary">lihat</button></a>
+                    || <a href="/category/edit/{{ $data->id }}" onclick="return confirm('Yakin category {{$data->name}} mau diubah?')"><button class="btn btn-warning">edit</button></a> ||
                   <form action="category/delete/{{ $data->id }}" method="post" class="d-inline">
                     @csrf
                     <button class="btn btn-danger" onclick="return confirm('Hapus data category {{$data->name}}?')">hapus</button>
@@ -126,10 +133,16 @@
                             <div class="form-group">
                                 <label for="name">Nama Kategori</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
+                                @error('name')
+                                  <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="image">Gambar Kategori</label>
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+                                @error('image')
+                                  <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="modal-footer">

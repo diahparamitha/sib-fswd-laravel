@@ -8,7 +8,7 @@
 			@foreach($products as $product) 
 			<div class="col-md-3 mt-5">
 				<div class="card" style="background-color: turquoise;">
-					<img src="https://source.unsplash.com/500x400?{{ $product->category->name }}" class="card-img" alt="$product->category->name }}">
+					<img src="{{ asset('image_product/'. $product['image']) }}" class="card-img" alt="$product->category->name }}">
 						<div class="card-img-overlay d-flex p-0">
 							<a href="/detail-product/{{ $product->id}}" class = "text-white text-decoration-none">
 							    <h5 class="card-title p-2 fs-3" style="background-color: turquoise; text-align: center;" > {{ $product->category->name }} </h5>

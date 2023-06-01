@@ -25,8 +25,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            if ($user->isAdmin()) {
-                return redirect()->route('index'); // Ganti dengan rute yang sesuai untuk halaman admin
+            if ($user->isAdmin() || $user->isStaff()) {
+                return redirect()->route('index'); // Ganti dengan rute yang sesuai untuk halaman admin/user
             } else {
                 return redirect()->intended('/'); // Ganti dengan rute yang sesuai untuk halaman user
             }
