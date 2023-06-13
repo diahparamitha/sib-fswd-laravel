@@ -40,83 +40,42 @@
 
         @include('layouts/partials-dashboard/slider')
 
-        @if(session()->has('edit'))
-        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          {{ session('edit') }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        <div class="row  mt-5 mb-5">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-title p-2">Hai {{auth()->user()->name}}</div>
+              <div class="card-body">
+                <div card class="text">Selamat datang di Arkatama Store! <br>
+                  <span> Ini adalah halaman dashboard admin!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-title p-2">Berikut Jumlah Data</div>
+              <div class="card-body">
+              <table>
+                <tr>
+                  <td>Jumlah User</td>
+                  <td> : </td>
+                  <td> {{ $result->count() }}</td>
+                </tr>
+                <tr>
+                  <td>Jumlah Category</td>
+                  <td> : </td>
+                  <td> {{ $categories->count() }}</td>
+                </tr>
+                <tr>
+                  <td>Jumlah Product</td>
+                  <td> : </td>
+                  <td> {{ $products->count() }}</td>
+                </tr>
+              </table>
+            </div>
+            </div>
+          </div>
         </div>
-        @endif
-
-        @if(session()->has('success'))
-        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          {{ session('success') }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        </div>
-        @endif
-
-        @if(session()->has('delete'))
-        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-          {{ session('delete') }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        </div>
-        @endif
-
-       @if(session()->has('alert'))
-        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-          {{ session('alert') }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        </div>
-        @endif
-
-       
-
-        <div class="container-fluid" style="margin-bottom: 30px; padding-top: 3px;">
-          <h3 style="text-align: center;">Data Pengguna</h3>
-          <h3 style="text-align: center;">Hai {{ Auth()->user()->role }} {{ Auth()->user()->name }}</h3>
-          <form action="/create" style="text-align: right;">
-            <button type="submit" class="btn btn-primary"> + Pengguna </button>
-          </form>
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Avatar</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Address</th>
-                <th scope="col" class="sort-role" data-orderable="true">Role</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @php $i = 1; @endphp
-              @foreach ($result as $data)
-              <tr>
-                <th>{{$i}}</th>
-                <td><img class="avatar" src="{{ asset('avatar/'. $data['avatar']) }}" alt="Avatar"></td>
-                <td><?= $data["name"]; ?></td>
-                <td><?= $data["email"]; ?></td>
-                <td><?= $data["phone"]; ?></td>
-                <td><?= $data["address"]; ?></td>
-                <td><?= $data["role"]; ?></td>
-                <td>
-                  <a href="/user/detail/{{ $data->id }}"><button class="btn btn-primary">detail</button></a>
-                  || <a href="/user/edit/{{ $data->id }}" onclick="return confirm('Yakin data user {{$data->name}} mau diubah?')"><button class="btn btn-warning">edit</button></a> ||
-                  <form action="/user/delete/{{ $data->id }}" method="post" class="d-inline">
-                    @csrf
-                    <button class="btn btn-danger" onclick="return confirm('Hapus data user {{$data->name}}?')">hapus</button>
-                  </form>
-                </td>
-              </tr>
-              @php $i++; @endphp
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

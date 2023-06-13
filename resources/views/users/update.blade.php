@@ -60,14 +60,6 @@
             </div>
 
             <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" value="{{ $row->password }}" aria-describedby="passwordHelp">
-              @error('password')
-                <div class="text-danger">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="form-group">
               <label for="avatar">Avatar</label>
               <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar" value="{{ $row->avatar }}">
             </div>

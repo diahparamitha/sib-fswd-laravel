@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -31,26 +33,27 @@ class CategoryController extends Controller
 
     public function createCategory(Request $request)
     {
-        $request->validate([
-            'name' => 'required | min:3',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+
+          $validator = Validator::make($request->all(), [
+           'name' => 'required | min:3',
+           'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-        // Simpan kategori baru ke database
-        $category = new Category();
-        $category->name = $request->name;
 
-         if($request->hasFile('image')){
-            //    define image location in local path
-            $location = public_path('/image_category');
-
-            // ambil file image dan simpan ke local server
-            $request->file('image')->move($location, $request->file('image')->getClientOriginalName());
-
-            // simpan nama file di database
-            $category->image = $request->file('image')->getClientOriginalName(); 
+        if ($validator->fails()){
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        $category->save();
+        //ubah nama file
+        $imageName = time() . '.' . $request->image->extension();
+
+        //simpan file ke folder public/image
+         Storage::putFileAs('public/image_category', $request->image, $imageName);
+
+        $data = Category::create([
+            'name'             => $request->name,
+            'image'            => $imageName,
+        ]);
+
         return redirect()->back()->with('success', 'Kategori berhasil ditambahkan');
     }
 
@@ -59,28 +62,28 @@ class CategoryController extends Controller
        return view('category.update', compact('category'));
     }
 
-    public function updateCategory(Request $request, $id) {
-        $row = Category::find($id);
+    public function updateCategory(Request $request, $id) 
+    {
 
-        $validated      = $request->validate([
-            'name'      => 'required | min:3',
-            'image'    => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+        if($request->hasFile('image')) {
+            $old_image = Category::find($id)->image;
 
-        $row-> name     = $request->name;
+            Storage::delete('public/image_category' . $old_image);
 
-     if($request->hasFile('image')){
-            //    define image location in local path
-            $location = public_path('/image_category');
+            $imageName = time() . '.' . $request->image->extension();
 
-            // ambil file image dan simpan ke local server
-            $request->file('image')->move($location, $request->file('image')->getClientOriginalName());
+            Storage::putFileAs('public/image_category', $request->image, $imageName);
 
-            // simpan nama file di database
-            $row->image = $request->file('image')->getClientOriginalName(); 
+            Category::where('id', $id)->update([
+                'name'             => $request->name,
+                'image'            => $imageName,
+            ]);
+        } else {
+             Category::where('id', $id)->update([
+                'name'             => $request->name,
+            ]);
         }
-
-        $row->save();
+        
         return redirect('/category-list')->with('edit', 'Category berhasil di-update!.');
     }
 

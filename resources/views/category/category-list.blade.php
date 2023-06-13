@@ -99,7 +99,7 @@
               @foreach ($categories as $data)
               <tr>
                 <th>{{$i}}</th>
-                <td><img class="image" src="{{ asset('image_category/'. $data['image']) }}" width="100px"  alt="Image"></td>
+                <td><img class="image" src="{{ asset('storage/image_category/'. $data['image']) }}" width="100px"  alt="Image"></td>
                 <td>{{ $data->name }}</td>
                  <td>
                   <a href="/category/{{ $data->id}}"><button class="btn btn-primary">lihat</button></a>

@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -43,37 +45,36 @@ class ProductController extends Controller
     }
 
     public function createProduct(Request $request) {
-        $request->validate([
-           'category_id'       => 'required',
+
+         $validator = Validator::make($request->all(), [
+            'category_id'       => 'required',
             'name'              => 'required | min:5',
             'description'       => 'required | min:10',
             'price'             => 'required|regex:/^\d{1,6}(\.\d{1,2})?$/',
             'status'            => 'required',
-            'image'             => 'image|mimes:png,jpeg,jpg',
+            'image'             => 'required | image|mimes:png,jpeg,jpg',
         ]);
 
-        $data                   = new Product();
-        $data-> category_id     = $request->category_id;
-        $data-> name            = $request->name;
-        $data-> description     = $request->description;
-        $data-> price           = $request->price;
-        $data-> status          = $request->status;
-        $data-> created_by      = auth()->id();
-        $data-> verified_by     = auth()->id();
-
-
-         if($request->hasFile('image')){
-            //    define image location in local path
-            $location = public_path('/image_product');
-
-            // ambil file image dan simpan ke local server
-            $request->file('image')->move($location, $request->file('image')->getClientOriginalName());
-
-            // simpan nama file di database
-            $data->image = $request->file('image')->getClientOriginalName(); 
+        if ($validator->fails()){
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        $data -> save();
+        //ubah nama file
+        $imageName = time() . '.' . $request->image->extension();
+
+        //simpan file ke folder public/image
+         Storage::putFileAs('public/image_product', $request->image, $imageName);
+
+        $data = Product::create([
+            'category_id'      => $request->category_id,
+            'name'             => $request->name,
+            'description'      => $request->description,
+            'price'            => $request->price,
+            'status'           => $request->status,
+            'image'            => $imageName,
+            'created_by'       => auth()->id(),
+            'verified_by'      => auth()->id(),
+        ]);
 
         return redirect('/product-list')->with('success', ' Product berhasil ditambah!');
     }
@@ -82,39 +83,38 @@ class ProductController extends Controller
     //Update product
     public function update(Request $request, $id) {
 
-        $row = Product::find($id);
+        if($request->hasFile('image')) {
+            $old_image = Product::find($id)->image;
 
-        $validated              = $request->validate([
-            'category_id'       => 'required',
-            'name'              => 'required | min:5',
-            'description'       => 'required | min:10',
-            'price'             => 'required|regex:/^\d{1,6}(\.\d{1,2})?$/',
-            'status'            => 'required',
-            'image'             => 'image|mimes:png,jpeg,jpg',
-        ]);
+            Storage::delete('public/image_product' . $old_image);
 
-        $row-> category_id     = $request->category_id;
-        $row-> name            = $request->name;
-        $row-> description     = $request->description;
-        $row-> price           = $request->price;
-        $row-> status          = $request->status;
-        $row-> created_by      = auth()->id();
-        $row-> verified_by     = auth()->id();
+            $imageName = time() . '.' . $request->image->extension();
 
-       if($request->hasFile('image')){
-            //    define image location in local path
-            $location = public_path('/image_product');
+            Storage::putFileAs('public/image_product', $request->image, $imageName);
 
-            // ambil file image dan simpan ke local server
-            $request->file('image')->move($location, $request->file('image')->getClientOriginalName());
-
-            // simpan nama file di database
-            $row->image = $request->file('image')->getClientOriginalName(); 
+            Product::where('id', $id)->update([
+                'category_id'      => $request->category_id,
+                'name'             => $request->name,
+                'description'      => $request->description,
+                'price'            => $request->price,
+                'status'           => $request->status,
+                'image'            => $imageName,
+                'created_by'       => auth()->id(),
+                'verified_by'      => auth()->id(),
+            ]);
+        } else {
+             Product::where('id', $id)->update([
+                'category_id'      => $request->category_id,
+                'name'             => $request->name,
+                'description'      => $request->description,
+                'price'            => $request->price,
+                'status'           => $request->status,
+                'created_by'       => auth()->id(),
+                'verified_by'      => auth()->id(),
+            ]);
         }
-
-        $row->save();
-
-            return redirect('/product-list');
+        
+        return redirect('/product-list')->with('edit', 'Product berhasil diperbaharui!');
     }
 
    public function delete($id) {

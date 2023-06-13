@@ -10,7 +10,7 @@
 		  <div class="card-body">
 		    <div class="row">
 		      <div class="col-sm-4 text-center">
-		       <img class="avatar" src="{{ asset('avatar/'. $row['avatar']) }}" alt="Avatar">
+		       <img class="avatar" src="{{ asset('storage/avatar/'. $row['avatar']) }}" alt="Avatar">
 		      </div>
 		      <div class="col-sm-8 text-center">
 		        <h5 class="card-title"><?= $row["name"]; ?></h5>

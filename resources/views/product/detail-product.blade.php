@@ -6,7 +6,7 @@
 	<div class="row justify-content-center">
 		<div class="col-lg-8">
 			<div class="card mb-5">
-				<img src="{{ asset('image_product/'. $product['image']) }}" class="card-img" alt="{{ $product->name }}" class="card-img-top">
+				<img src="{{ asset('storage/image_product/'. $product['image']) }}" class="card-img card-img-top" alt="{{ $product->name }}" style="width: auto; height: 500px; object-fit: cover;">
 				<div class="card-body">
 					<h5 class="card-title" style="font-size: 50px">{{ $product->name }}</h5>
 					<p class="card-text">{{ $product->category->name }}</p>

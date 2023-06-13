@@ -46,7 +46,9 @@ class AuthController extends Controller
 
     public function index() {
         $result = User::all();
-        return view('index', compact('result'));
+        $products = Product::all();
+        $categories = Category::all();
+        return view('index', compact('result', 'products', 'categories'));
     }
 
     public function landing() {

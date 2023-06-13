@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 class UserController extends Controller
@@ -15,37 +17,38 @@ class UserController extends Controller
     }
 
     //Tambah user
-    public function createUser(Request $request) {
-        $request->validate([
-             'name'      => 'required | min:3',
+    public function createUser(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name'      => 'required | min:3',
             'email'     => 'required | email | unique:users',
             'phone'     => 'required | min:12 | max:12',
             'address'   => 'required | max:50',
             'role'      => 'required',
             'password'  => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])/',
-            'avatar'    => 'image | file',
+            'avatar'    => 'required | image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $data               = new User;
-        $data-> name        = $request->name;
-        $data-> email       = $request->email;
-        $data-> phone       = $request->phone;
-        $data-> address     = $request->address;
-        $data-> role        = $request->role;
-        $data-> password    = bcrypt($request->password);
-
-        if($request->hasFile('avatar')){
-            //    define image location in local path
-            $location = public_path('/avatar');
-
-            // ambil file image dan simpan ke local server
-            $request->file('avatar')->move($location, $request->file('avatar')->getClientOriginalName());
-
-            // simpan nama file di database
-            $data->avatar = $request->file('avatar')->getClientOriginalName(); 
+        if ($validator->fails()){
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        $data -> save();
+        //ubah nama file
+        $imageName = time() . '.' . $request->avatar->extension();
+
+        //simpan file ke folder public/avatar
+         Storage::putFileAs('public/avatar', $request->avatar, $imageName);
+
+        $data = User::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'address'   => $request->address,
+            'role'      => $request->role,
+            'password'  => bcrypt($request->password),
+            'avatar'    => $imageName,
+        ]);
+
         return redirect('/dashboard')->with('success', ' User berhasil ditambah!');
     }
 
@@ -59,37 +62,33 @@ class UserController extends Controller
     //Update user
     public function update(Request $request, $id) {
 
-        $row = User::find($id);
+        if($request->hasFile('avatar')) {
+            $old_image = User::find($id)->avatar;
 
-        $validated      = $request->validate([
-            'name'      => 'required | min:3',
-            'email'     => 'required | email',
-            'phone'     => 'required | min:12 | max:12',
-            'address'   => 'required | max:50',
-            'role'      => 'required',
-            'password'  => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])/',
-            'avatar'    => 'image | file',
-        ]);
+            Storage::delete('public/avatar' . $old_image);
 
-        $row-> name     = $request->name;
-        $row-> email    = $request->email;
-        $row-> phone    = $request->phone;
-        $row-> address  = $request->address;
-        $row-> role     = $request->role;
-        $row-> password = bcrypt($request->password);
+            $imageName = time() . '.' . $request->avatar->extension();
 
-      if($request->hasFile('avatar')){
-            //    define image location in local path
-            $location = public_path('/avatar');
+            Storage::putFileAs('public/avatar', $request->avatar, $imageName);
 
-            // ambil file image dan simpan ke local server
-            $request->file('avatar')->move($location, $request->file('avatar')->getClientOriginalName());
-
-            // simpan nama file di database
-            $row->avatar = $request->file('avatar')->getClientOriginalName(); 
+            User::where('id', $id)->update([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
+                'address'  => $request->address,
+                'role'     => $request->role,
+                'avatar'   => $imageName,
+            ]);
+        } else {
+             User::where('id', $id)->update([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
+                'address'  => $request->address,
+                'role'     => $request->role,
+            ]);
         }
 
-        $row->save();
         return redirect('/dashboard')->with('edit', 'Data pengguna berhasil di-update!.');
     }
 

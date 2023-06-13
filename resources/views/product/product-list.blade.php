@@ -103,7 +103,7 @@
               @foreach ($products as $data)
               <tr>
                 <th>{{$i}}</th>
-                <td><img class="avatar" src="{{ asset('image_product/'. $data['image']) }}" width="100px" alt="Avatar"></td>
+                <td><img class="avatar" src="{{ asset('storage/image_product/'. $data['image']) }}" width="100px" alt="Avatar"></td>
                 <td><?= $data["name"]; ?></td>
                 <td>{{ $data->category->name }}</td>
                 <td><?= $data["price"]; ?></td>

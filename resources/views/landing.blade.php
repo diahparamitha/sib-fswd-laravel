@@ -17,7 +17,9 @@
                   <div class="row">
                      @foreach ($chunk as $product)
                      <div class="col-lg-4">
-                        <div class="coffee_img"><img src="{{ asset('image_product/'. $product['image']) }}"></div>
+                        <div class="coffee_img">
+                           <img src="{{ asset('storage/image_product/'. $product['image']) }}" style="width: 500px; height: 300px; object-fit: cover;">
+                        </div>
                         <h3 class="types_text">{{ $product->name }}</h3>
                         <p class="looking_text">{{ $product->price }}</p>
                         <div class="mb-3">
