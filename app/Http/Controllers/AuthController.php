@@ -56,4 +56,9 @@ class AuthController extends Controller
          $categories = Category::all();
         return view('landing', compact(['products', 'categories']));
     }
+
+     public function user() {
+        $result = User::all();
+        return view('user', compact('result'));
+    }
 }

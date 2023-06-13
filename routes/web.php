@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/dashboard', [AuthController::class, 'index'])->name('index');
+Route::get('/pengguna', [AuthController::class, 'user']);
 Route::get('/', [AuthController::class, 'landing']);
 
 Route::get('/category', [CategoryController::class, 'index']);

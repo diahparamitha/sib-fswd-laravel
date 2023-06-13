@@ -49,7 +49,7 @@ class UserController extends Controller
             'avatar'    => $imageName,
         ]);
 
-        return redirect('/dashboard')->with('success', ' User berhasil ditambah!');
+        return redirect('/pengguna')->with('success', ' User berhasil ditambah!');
     }
 
     //Ke halaman edit user
@@ -89,7 +89,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect('/dashboard')->with('edit', 'Data pengguna berhasil di-update!.');
+        return redirect('/pengguna')->with('edit', 'Data pengguna berhasil di-update!.');
     }
 
     //Ke halaman detail user
@@ -105,6 +105,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect('/dashboard')->with('delete', 'Data user berhasil dihapus');
+        return redirect('/pengguna')->with('delete', 'Data user berhasil dihapus');
     }
 }
